@@ -9,6 +9,21 @@ create or replace table users(
     create_by int
 );
 
+create or replace table roles(
+    id Serial not null primary key,
+    role_name varchar(32),
+    create_date timestamp
+);
+
+create or replace table users_roles(
+    id Serial not null primary key,
+    users_id int,
+    roles_id int,
+    craete_date timestamp,
+    create_by int,
+    active boolean
+);
+
 create or replace table groups(
     id Serial not null primary key,
     group_name varchar(128),
@@ -22,5 +37,5 @@ create or replace table users_groups(
     users_id int,
     groups_id int,
     create_date timestamp,
-
+    create_by int
 );

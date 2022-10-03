@@ -9,25 +9,25 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "users_roles")
+public class UserRoles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
-    private String name;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id")
+    private User users;
 
-    private String email;
-    private String login;
-    private String password;
-    private String jobTitle;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roles_id")
+    private Role roles;
 
-    @Column(name = "create_date")
     private LocalDateTime createDate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User createBy;
 
+    private boolean active;
 }
