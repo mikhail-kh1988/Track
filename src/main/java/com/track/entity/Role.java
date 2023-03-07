@@ -19,4 +19,8 @@ public class Role {
     @Column(name = "role_name")
     private String name;
     private LocalDateTime createDate;
+    @Column(name = "is_read")
+    private boolean read;
+    @Column(name = "is_write")
+    private boolean write;
 }
