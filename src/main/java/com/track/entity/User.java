@@ -1,10 +1,12 @@
 package com.track.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,5 +34,12 @@ public class User {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User createBy;
+
+    @OneToMany(mappedBy = "users")
+    private List<UserRole> roleList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<UserGroup> groupList;
 
 }

@@ -1,10 +1,9 @@
 package com.track.repository;
 
-import com.track.entity.Role;
+import com.track.entity.UserGroup;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends CrudRepository<Role,Long> {
-    Role findRoleByName(String name);
+public interface UserGroupRepository extends CrudRepository<UserGroup, Long> {
 }

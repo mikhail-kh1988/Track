@@ -3,14 +3,16 @@ package com.track.service.impl;
 import com.track.dto.UserDto;
 import com.track.entity.Role;
 import com.track.entity.User;
+import com.track.entity.UserRole;
 import com.track.repository.RoleRepository;
 import com.track.repository.UserRepository;
-import com.track.repository.UserRolesRepository;
+import com.track.repository.UsersRolesRepository;
 import com.track.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +22,7 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserRolesRepository userRolesRepository;
+    private UsersRolesRepository usersRolesRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -32,6 +34,8 @@ public class UserService implements IUserService {
         user.setJobTitle(dto.getJob_title());
         user.setLogin(dto.getLogin());
         user.setCreateDate(LocalDateTime.now());
+        user.setPhoneNumber(dto.getPhone());
+        user.setEmail(dto.getEmail());
 
         User userSave = userRepository.save(user);
 
@@ -47,10 +51,26 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean addUserRole(String userLogin, String roleName) {
+    public boolean addUserRole(String userLogin, String roleName, Long createByLoginId) {
+        User createBy = userRepository.findById(createByLoginId).get();
         User user = userRepository.findUserByLogin(userLogin);
-        Role role = roleRepository.findRoleByRoleName(roleName);
+        Role role = roleRepository.findRoleByName(roleName);
 
+        if (user != null & role != null & createBy != null){
+
+
+            UserRole userRole = new UserRole();
+
+            userRole.setUsers(user);
+            userRole.setRoles(role);
+            userRole.setCreateDate(LocalDateTime.now());
+            userRole.setActive(true);
+            userRole.setCreateBy(createBy);
+
+            usersRolesRepository.save(userRole);
+
+            return true;
+        }
         return false;
     }
 
@@ -61,11 +81,85 @@ public class UserService implements IUserService {
 
     @Override
     public boolean createNewRole(String nameRole) {
+
+        if (roleRepository.findRoleByName(nameRole)!=null) {
+
+            Role role = new Role();
+
+            role.setName(nameRole);
+            role.setCreateDate(LocalDateTime.now());
+            role.setRead(true);
+            role.setWrite(true);
+
+            roleRepository.save(role);
+
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        List<User> list = new ArrayList<>();
+        for (User u: userRepository.findAll()) {
+            list.add(u);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        List<Role> roles = new ArrayList<>();
+
+        for (Role r: roleRepository.findAll()) {
+            roles.add(r);
+        }
+
+        return roles;
+    }
+
+    @Override
+    public List<Role> getUserRoles(String userLogin) {
+
+        List<Role> roles = new ArrayList<>();
+
+        User user = userRepository.findUserByLogin(userLogin);
+
+        for (UserRole tempRole: user.getRoleList()) {
+            roles.add(tempRole.getRoles());
+        }
+
+        return roles;
+    }
+
+    @Override
+    public User findUserById(long ownerId) {
+        return userRepository.findById(ownerId).get();
+    }
+
+    @Override
+    public boolean setRoleRead(String roleName) {
+        Role currentRole = roleRepository.findRoleByName(roleName);
+
+        if (currentRole != null){
+
+            currentRole.setWrite(false);
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean setRoleWrite(String roleName) {
+        Role currentRole = roleRepository.findRoleByName(roleName);
+
+        if (currentRole != null){
+
+            currentRole.setRead(false);
+
+            return true;
+        }
+        return false;
     }
 }

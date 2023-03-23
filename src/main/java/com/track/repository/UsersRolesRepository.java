@@ -1,10 +1,10 @@
 package com.track.repository;
 
 
-import com.track.entity.UserRoles;
+import com.track.entity.UserRole;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRolesRepository extends CrudRepository<UserRoles, Long> {
+public interface UsersRolesRepository extends CrudRepository<UserRole, Long> {
 }
