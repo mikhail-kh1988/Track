@@ -35,6 +35,7 @@ public class UserService implements IUserService {
         user.setLogin(dto.getLogin());
         user.setCreateDate(LocalDateTime.now());
         user.setPhoneNumber(dto.getPhone());
+        user.setStatus(100);
         user.setEmail(dto.getEmail());
 
         User userSave = userRepository.save(user);
@@ -76,13 +77,39 @@ public class UserService implements IUserService {
 
     @Override
     public boolean deleteUser(String userLogin) {
+        User user = userRepository.findUserByLogin(userLogin);
+
+        if (user != null) {
+
+            userRepository.delete(user);
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteRoleFromUser(String userLogin, String roleName) {
+
+        User user = userRepository.findUserByLogin(userLogin);
+        UserRole currentRole = new UserRole();
+
+        for (UserRole ur: user.getRoleList()) {
+            if (ur.getRoles().getName().equals(roleName)){
+                currentRole.setId(ur.getId());
+
+                usersRolesRepository.delete(currentRole);
+                return true;
+            }
+        }
+
         return false;
     }
 
     @Override
     public boolean createNewRole(String nameRole) {
 
-        if (roleRepository.findRoleByName(nameRole)!=null) {
+        if (roleRepository.findRoleByName(nameRole)==null) {
 
             Role role = new Role();
 
@@ -144,6 +171,9 @@ public class UserService implements IUserService {
         if (currentRole != null){
 
             currentRole.setWrite(false);
+            currentRole.setRead(true);
+
+            roleRepository.save(currentRole);
 
             return true;
         }
@@ -157,6 +187,9 @@ public class UserService implements IUserService {
         if (currentRole != null){
 
             currentRole.setRead(false);
+            currentRole.setWrite(true);
+
+            roleRepository.save(currentRole);
 
             return true;
         }

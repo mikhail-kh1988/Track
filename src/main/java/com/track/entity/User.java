@@ -32,9 +32,11 @@ public class User {
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User createBy;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "users")
     private List<UserRole> roleList;
 

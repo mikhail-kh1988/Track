@@ -9,7 +9,7 @@ create or replace table users(
     cn_ad_user varchar(1024),
     status int,
     create_date timestamp,
-    create_by int
+    create_by_id int
 );
 
 create or replace table roles(
@@ -25,7 +25,7 @@ create or replace table users_roles(
     users_id int,
     roles_id int,
     create_date timestamp,
-    create_by int,
+    create_by_id int,
     active boolean
 );
 
@@ -36,7 +36,7 @@ create or replace table groups(
     status int,
     create_date timestamp,
     owner_id int,
-    create_by int
+    create_by_id int
 );
 
 create or replace table users_groups(
@@ -44,5 +44,33 @@ create or replace table users_groups(
     users_id int,
     groups_id int,
     create_date timestamp,
-    create_by int
+    create_by_id int
 );
+
+create table projects(
+	id Serial,
+	name varchar(128),
+	description text,
+	create_date timestamp,
+	type int
+);
+
+create table comments(
+	id Serial,
+	user_id int,
+	create_date timestamp,
+	body text
+);
+
+create table category(
+	id Serial ,
+	name varchar(256),
+	project_id int
+);
+
+create table status(
+	id int,
+	name varchar(64),
+	orders int,
+	project_id int
+)

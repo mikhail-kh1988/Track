@@ -11,6 +11,7 @@ public interface IUserService {
     User findUserByLogin(String login);
     boolean addUserRole(String userLogin, String role, Long createByLoginId);
     boolean deleteUser(String userLogin);
+    boolean deleteRoleFromUser(String userLogin, String roleName);
 
     List<User> getAllUsers();
     List<Role> getUserRoles(String userLogin);

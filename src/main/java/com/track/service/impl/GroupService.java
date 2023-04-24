@@ -1,12 +1,10 @@
 package com.track.service.impl;
 
-import com.track.dto.GroupDto;
 import com.track.entity.Group;
 import com.track.entity.User;
 import com.track.entity.UserGroup;
 import com.track.repository.GroupRepository;
 import com.track.repository.UserGroupRepository;
-import com.track.repository.UserRepository;
 import com.track.service.IGroupService;
 import com.track.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,7 @@ public class GroupService implements IGroupService {
         Group group = groupRepository.findGroupByName(groupName);
         User user = userService.findUserById(createByID);
 
-        if (group.getName().equals(groupName)){
-            return false;
-        }else if (user != null){
+        if (group == null & user != null){
 
             Group newGroup = new Group();
             newGroup.setName(groupName);
@@ -43,7 +39,32 @@ public class GroupService implements IGroupService {
             newGroup.setActive(true);
             newGroup.setStatus(100);
             newGroup.setCreateBy(user);
+
+            groupRepository.save(newGroup);
         }
+        return true;
+    }
+
+    @Override
+    public boolean removeGroup(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+
+        if (group != null){
+
+            group.setCreateBy(null);
+            group.setOwner(null);
+
+            groupRepository.save(group);
+
+            group = null;
+
+            group = groupRepository.findById(groupId).get();
+
+            groupRepository.delete(group);
+
+            return true;
+        }
+
         return false;
     }
 
@@ -114,13 +135,24 @@ public class GroupService implements IGroupService {
 
             UserGroup removeUserFromGroup = new UserGroup();
 
+            Long tempId = 0L;
+
             for (UserGroup userGroup: group.getGroupList()) {
                 if (userGroup.getUser().getId() == user.getId()){
+                    tempId = userGroup.getId();
                     removeUserFromGroup.setId(userGroup.getId());
                 }
             }
 
-            userGroupRepository.delete(removeUserFromGroup);
+            removeUserFromGroup.setUser(null);
+            removeUserFromGroup.setGroup(null);
+
+            userGroupRepository.save(removeUserFromGroup);
+
+            UserGroup tmpRemoveUserFromGroup = new UserGroup();
+            tmpRemoveUserFromGroup.setId(tempId);
+
+            userGroupRepository.delete(tmpRemoveUserFromGroup);
 
             return true;
         }
