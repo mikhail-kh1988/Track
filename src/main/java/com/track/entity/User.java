@@ -41,7 +41,7 @@ public class User {
     private List<UserRole> roleList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "users")
     private List<UserGroup> groupList;
 
 }

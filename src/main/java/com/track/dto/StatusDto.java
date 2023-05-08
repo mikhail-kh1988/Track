@@ -15,5 +15,6 @@ public class StatusDto {
     private Long id;
     private String name;
     private int order;
-    private int project_id;
+    private Long project_id;
+    private boolean closed;
 }

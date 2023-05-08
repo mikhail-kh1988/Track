@@ -8,16 +8,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "status")
-public class Status {
+@Table(name = "track")
+public class Track {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int orders;
-    private boolean closed;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Project project;
-
 }

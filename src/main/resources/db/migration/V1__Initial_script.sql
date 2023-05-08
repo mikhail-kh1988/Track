@@ -72,5 +72,74 @@ create table status(
 	id int,
 	name varchar(64),
 	orders int,
+	closed boolean,
 	project_id int
-)
+);
+
+create table track(
+	id Serial,
+	name varchar(256),
+	projects_id int
+);
+
+create table sprints(
+	id Serial,
+	start_date timestamp,
+	end_date timestamp,
+	name varchar(128),
+	user_id int,
+	closed boolean
+);
+
+create table sprint_issue(
+	id Serial,
+	add_user_by_id int,
+	create_date timestamp,
+	sprint_id int,
+	issue_id int
+);
+
+
+create table bind_issue(
+	id Serial,
+	bind_user_id int,
+	create_date timeStamp,
+	issue_id int
+);
+
+create table projects_groups(
+	projects_id int,
+	groups_id int
+);
+
+
+create table issues(
+	id Serial,
+	external_id varchar(32),
+	track_name varchar(128),
+	short_description varchar(128),
+	description_body text,
+	resolution text,
+	priority int,
+	status_id int,
+	project_id int,
+	category_id int,
+	create_by_id int,
+	assign_id int,
+	create_date timestamp,
+	start_date timestamp,
+	last_change_date timestamp,
+	end_date timestamp,
+	lose boolean,
+	parent boolean,
+	version varchar(128),
+	state int
+);
+
+create table comments_issues(
+	id Serial,
+	users_id int,
+	issues_id int,
+	comments_id int,
+	create_date timestamp
+);

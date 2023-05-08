@@ -2,26 +2,31 @@ package com.track.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import java.util.List;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "sprint_issue")
+public class SprintIssue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private User user;
-    private LocalDateTime createDate;
-    private String body;
+    private User addUserBy;
 
-    @OneToMany(mappedBy = "comments")
-    private List<CommentIssue> commentIssueList;
+    private LocalDateTime createDate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sprints_id")
+    private Sprint sprint;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "issue_id")
+    private Issue issue;
 
 }
