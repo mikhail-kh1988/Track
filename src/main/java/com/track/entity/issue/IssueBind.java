@@ -1,5 +1,7 @@
-package com.track.entity;
+package com.track.entity.issue;
 
+import com.track.entity.User;
+import com.track.entity.issue.Issue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "bind_issue")
-public class BindIssue {
+public class IssueBind {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

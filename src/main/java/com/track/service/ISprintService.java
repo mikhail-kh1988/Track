@@ -2,7 +2,7 @@ package com.track.service;
 
 import com.track.dto.ChangeDateSprintDto;
 import com.track.dto.SprintDto;
-import com.track.entity.Issue;
+import com.track.entity.issue.Issue;
 import com.track.entity.Sprint;
 
 import java.time.LocalDate;

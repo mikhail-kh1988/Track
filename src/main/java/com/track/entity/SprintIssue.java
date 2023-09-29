@@ -1,5 +1,6 @@
 package com.track.entity;
 
+import com.track.entity.issue.Issue;
 import lombok.Getter;
 import lombok.Setter;
 

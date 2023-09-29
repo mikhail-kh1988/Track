@@ -59,6 +59,8 @@ create table comments(
 	id Serial,
 	user_id int,
 	create_date timestamp,
+	response boolean,
+    comment_id int,
 	body text
 );
 
@@ -141,5 +143,22 @@ create table comments_issues(
 	users_id int,
 	issues_id int,
 	comments_id int,
+	create_date timestamp
+);
+
+create table files(
+	id Serial,
+	name varchar(256),
+	path varchar(1024),
+	create_date timestamp,
+	user_id int
+);
+
+create table time_cost(
+	id Serial,
+	issue_id int,
+	comment varchar(1024),
+	time int,
+	date date,
 	create_date timestamp
 );

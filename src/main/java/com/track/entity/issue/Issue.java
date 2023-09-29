@@ -1,6 +1,7 @@
-package com.track.entity;
+package com.track.entity.issue;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.track.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
@@ -40,8 +41,8 @@ public class Issue {
 
     private LocalDateTime createDate;
     private LocalDateTime startDate;
-    private LocalDateTime lastChangeDate;
     private LocalDateTime endDate;
+    private LocalDateTime lastChangeDate;
     private boolean lose;
     private boolean parent;
     private String version;
@@ -49,14 +50,22 @@ public class Issue {
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<CommentIssue> commentIssueList;
+    private List<IssueComment> issueCommentList;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<BindIssue> bindIssuesList;
+    private List<IssueBind> issuesListBind;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
     private List<SprintIssue> sprintIssueList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "issues")
+    private List<IssueAttachment> issueAttachments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "issues")
+    private List<IssueTimeCost> issueTimeCosts;
 
 }
