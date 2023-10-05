@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "rfc")
+//@Table(name = "rfc")
 public class RFC {
 
     private Long id;

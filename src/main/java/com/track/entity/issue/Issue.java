@@ -47,6 +47,7 @@ public class Issue {
     private boolean parent;
     private String version;
     private int state;
+    private int timeCost;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")

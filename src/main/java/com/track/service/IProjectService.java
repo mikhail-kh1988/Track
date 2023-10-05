@@ -1,6 +1,7 @@
 package com.track.service;
 
 import com.track.dto.StatusDto;
+import com.track.entity.Category;
 import com.track.entity.Project;
 import com.track.entity.Status;
 import com.track.entity.Track;
@@ -12,10 +13,12 @@ public interface IProjectService {
     Boolean createNewProject(String name);
     Boolean createNewTrack(String trackName, Long projectId);
     Boolean createNewStatus(StatusDto dto);
+    Boolean createNewCategory(Long projectId, String categoryName);
     Boolean deleteTrackById(Long trackId);
     Boolean deleteStatusById(Long statusId);
     List<Track> getTracksByProject(Long projectId);
     List<Status> getStatusesByProject(Long projectId);
+    List<Category> getCategoryByProject(Long projectId);
     Boolean deleteProjectById(Long id);
     Boolean changeNameProject(Long id, String newName);
     Boolean changeTypeProject(Long id, int newType);
@@ -26,7 +29,7 @@ public interface IProjectService {
     List<Project> findProjectsByType(int type);
     void addGroupInProject(Long groupId, Long projectId);
     void removeGroupFromProject(Long groupId, Long projectId);
-    Boolean createNewCategory(String categoryName, Long projectId);
+
     Boolean removeCategoryById(Long id);
 
 

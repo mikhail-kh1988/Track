@@ -135,7 +135,8 @@ create table issues(
 	lose boolean,
 	parent boolean,
 	version varchar(128),
-	state int
+	state int,
+	time_cost int
 );
 
 create table comments_issues(

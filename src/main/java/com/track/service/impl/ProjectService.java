@@ -88,6 +88,26 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
+    public Boolean createNewCategory(Long projectId, String categoryName) {
+        Project project = projectRepository.findById(projectId).get();
+
+        Category category = categoryRepository.findByName(categoryName);
+
+        if (category != null){
+
+            category.setName(categoryName);
+            category.setProject(project);
+
+            categoryRepository.save(category);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    @Override
     public Boolean deleteTrackById(Long trackId) {
 
         Track track = trackRepository.findById(trackId).get();
@@ -139,6 +159,18 @@ public class ProjectService implements IProjectService {
         }
 
         return statuses;
+    }
+
+    @Override
+    public List<Category> getCategoryByProject(Long projectId) {
+
+        List<Category> categories = new ArrayList<>();
+
+        for (Category cat: categoryRepository.findByProjectId(projectId)) {
+            categories.add(cat);
+        }
+
+        return categories;
     }
 
     @Override
@@ -289,24 +321,6 @@ public class ProjectService implements IProjectService {
 
     }
 
-    @Override
-    public Boolean createNewCategory(String categoryName, Long projectId) {
-        Project project = projectRepository.findById(projectId).get();
-
-        Category category = categoryRepository.findByName(categoryName);
-
-        if (category != null){
-
-            category.setName(categoryName);
-            category.setProject(project);
-
-            categoryRepository.save(category);
-
-            return true;
-        }
-
-        return false;
-    }
 
     @Override
     public Boolean removeCategoryById(Long id) {
