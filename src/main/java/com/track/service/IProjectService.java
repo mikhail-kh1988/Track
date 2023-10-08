@@ -1,5 +1,6 @@
 package com.track.service;
 
+import com.track.dto.ProjectDto;
 import com.track.dto.StatusDto;
 import com.track.entity.Category;
 import com.track.entity.Project;
@@ -22,7 +23,7 @@ public interface IProjectService {
     Boolean deleteProjectById(Long id);
     Boolean changeNameProject(Long id, String newName);
     Boolean changeTypeProject(Long id, int newType);
-    Boolean changeDescriptionProject(Long id, String description);
+    Boolean changeDescriptionProject(ProjectDto dto);
     List<Project> getAllProjects();
     Project findProjectByID(Long id);
     Project findProjectByName(String name);

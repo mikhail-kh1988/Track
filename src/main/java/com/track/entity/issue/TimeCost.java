@@ -24,4 +24,5 @@ public class TimeCost {
     private int time;
     private LocalDate date;
     private LocalDateTime createDate;
+
 }

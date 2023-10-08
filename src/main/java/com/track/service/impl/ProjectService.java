@@ -1,5 +1,6 @@
 package com.track.service.impl;
 
+import com.track.dto.ProjectDto;
 import com.track.dto.StatusDto;
 import com.track.entity.*;
 import com.track.repository.*;
@@ -222,12 +223,12 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Boolean changeDescriptionProject(Long id, String description) {
-        Project project = projectRepository.findById(id).get();
+    public Boolean changeDescriptionProject(ProjectDto dto) {
+        Project project = projectRepository.findById(dto.getId()).get();
 
         if (project != null){
 
-            project.setDescription(description);
+            project.setDescription(dto.getDescription());
 
             projectRepository.save(project);
 

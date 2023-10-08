@@ -5,6 +5,7 @@ create or replace table users(
     login varchar(128),
     password varchar(512),
     job_title varchar(64),
+    department varchar(256),
     phone_number varchar(20),
     cn_ad_user varchar(1024),
     status int,

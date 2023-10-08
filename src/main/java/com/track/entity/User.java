@@ -25,6 +25,7 @@ public class User {
     private String login;
     private String password;
     private String jobTitle;
+    private String department;
     private String phoneNumber;
     private String cnAdUser;
     private int status;
