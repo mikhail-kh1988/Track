@@ -10,8 +10,8 @@ public class IssueDto {
     private String shortDescription;
     private String descriptionBody;
     private int priority;
-    private int projectId;
-    private int createByUserId;
-    private int trackId;
+    private long projectId;
+    private long createByUserId;
+    private long trackId;
 
 }
