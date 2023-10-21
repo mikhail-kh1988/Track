@@ -80,6 +80,7 @@ public class ProjectService implements IProjectService {
             status.setName(dto.getName());
             status.setClosed(dto.isClosed());
             status.setOrders(dto.getOrder());
+            status.setGroup(groupRepository.findById(dto.getGroup_id()).get());
 
             statusRepository.save(status);
             return true;

@@ -52,6 +52,7 @@ create table projects(
 	id Serial,
 	name varchar(128),
 	description text,
+	prefix varchar(3),
 	create_date timestamp,
 	type int
 );
@@ -76,7 +77,8 @@ create table status(
 	name varchar(64),
 	orders int,
 	closed boolean,
-	project_id int
+	project_id int,
+	group_id int
 );
 
 create table track(
@@ -129,10 +131,12 @@ create table issues(
 	category_id int,
 	create_by_id int,
 	assign_id int,
+	assign_group_id int,
 	create_date timestamp,
 	start_date timestamp,
 	last_change_date timestamp,
 	end_date timestamp,
+	closed boolean,
 	lose boolean,
 	parent boolean,
 	version varchar(128),

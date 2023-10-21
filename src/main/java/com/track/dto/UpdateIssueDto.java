@@ -9,12 +9,13 @@ import java.time.LocalDateTime;
 @Setter
 public class UpdateIssueDto {
 
+    private String externalId;
     private String shortDescription;
     private String descriptionBody;
     private int priority;
     private long projectId;
-    //private int createByUserId;
-    //private int trackId;
+    private int createByUserId;
+    private int trackId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int state;
@@ -22,6 +23,7 @@ public class UpdateIssueDto {
     private long categoryId;
     private long statusId;
     private long assignId;
+    private long assignGroupId;
     private String version;
 
 }

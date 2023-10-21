@@ -4,14 +4,13 @@ import com.track.dto.CommentDto;
 import com.track.dto.IssueDto;
 import com.track.dto.UpdateIssueDto;
 import com.track.entity.Project;
+import com.track.entity.Status;
 import com.track.entity.issue.Attachment;
 import com.track.entity.issue.Issue;
 import com.track.entity.issue.TimeCost;
-import com.track.repository.IssueRepository;
-import com.track.repository.ProjectRepository;
-import com.track.repository.TimeCostRepository;
-import com.track.repository.TrackRepository;
+import com.track.repository.*;
 import com.track.service.IIssueService;
+import com.track.service.IProjectService;
 import com.track.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,13 @@ public class IssueService implements IIssueService {
     private IssueRepository issueRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectService projectService;
+
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private TimeCostRepository timeCostRepository;
@@ -40,34 +45,61 @@ public class IssueService implements IIssueService {
     @Override
     public boolean createNewIssue(IssueDto dto) {
 
+        Status status = null;
         Issue issue = new Issue();
         issue.setCreateDate(LocalDateTime.now());
         issue.setShortDescription(dto.getShortDescription());
         issue.setDescriptionBody(dto.getDescriptionBody());
         issue.setPriority(dto.getPriority());
+        issue.setCreateBy(userService.findUserById(dto.getCreateByUserId()));
+        issue.setTrackName(trackRepository.findById(dto.getTrackId()).get().getName());
+        issue.setProject(projectService.findProjectByID(dto.getProjectId()));
+        issue.setExternalId(createExternalId(projectService.findProjectByID(dto.getProjectId())));
 
+        for (Status st: projectService.getStatusesByProject(dto.getProjectId())) {
+            if (st.getOrders() == 1){
+                status = st;
+            }
+        }
 
+        issue.setStatus(status);
 
+        issueRepository.save(issue);
 
         return false;
     }
 
     private String createExternalId(Project project){
-        String name = project.getName();
-        String template = "";
+        String templateId = "";
 
-        if (name.length() <= 3){
-            return template = name+"-"+template;
+        if(issueRepository.findByLastRecord().isPresent()){
+            String lastID = issueRepository.findByLastRecord().get().getExternalId();
 
+            String str[] = lastID.split("-");
+
+            Long ID = Long.getLong(str[1]);
+
+            ID++;
+
+            templateId = project.getPrefix()+"-"+ID;
+
+        }else {
+            String fix = project.getPrefix();
+            templateId = fix + "-" + 1;
         }
 
-        return "";
+        return templateId;
     }
 
     @Override
     public boolean changeIssue(UpdateIssueDto dto) {
+        Issue issue = issueRepository.findByExternalId(dto.getExternalId());
+        
+
+
         return false;
     }
+
 
     @Override
     public boolean deleteIssue(String externalId) {
@@ -76,7 +108,7 @@ public class IssueService implements IIssueService {
 
     @Override
     public Issue findIssueByExternalId(String externalId) {
-        return null;
+        return issueRepository.findByExternalId(externalId);
     }
 
     @Override

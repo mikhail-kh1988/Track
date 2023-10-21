@@ -39,10 +39,14 @@ public class Issue {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User assign;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Group assignGroup;
+
     private LocalDateTime createDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LocalDateTime lastChangeDate;
+    private boolean closed;
     private boolean lose;
     private boolean parent;
     private String version;

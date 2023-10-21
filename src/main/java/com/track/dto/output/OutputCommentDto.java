@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 public class OutputCommentDto {
 
     private String login;
+    private String fullName;
     private String body;
     private LocalDateTime createDate;
+    private boolean response;
 
 }

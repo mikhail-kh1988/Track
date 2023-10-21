@@ -20,4 +20,7 @@ public class Status {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Project project;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Group group;
+
 }

@@ -15,12 +15,17 @@ public class OutputIssueDto {
     private String shortDescription;
     private String description;
     private int priority;
+    private String priorityName;
     private String status;
     private LocalDateTime createDate;
     private LocalDateTime lastChangeDate;
     private LocalDateTime endDate;
     private boolean lose;
     private boolean parent;
+    private String categoryName;
+    private long categoryId;
+    private String assignName;
+    private long assignId;
     private List<OutputCommentDto> comments;
 
 }
