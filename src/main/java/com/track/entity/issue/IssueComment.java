@@ -23,11 +23,11 @@ public class IssueComment {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "issues_id")
-    private Issue issue;
+    private Issue issues;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "comments_id")
-    private Comment comment;
+    private Comment comments;
 
     private LocalDateTime createDate;
 

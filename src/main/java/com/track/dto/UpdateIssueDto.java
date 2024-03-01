@@ -12,6 +12,7 @@ public class UpdateIssueDto {
     private String externalId;
     private String shortDescription;
     private String descriptionBody;
+    private String resolution;
     private int priority;
     private long projectId;
     private int createByUserId;

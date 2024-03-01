@@ -17,8 +17,8 @@ public class IssueAttachment {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "issue_id")
-    private Issue issue;
+    @JoinColumn(name = "issues_id")
+    private Issue issues;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attachment_id")

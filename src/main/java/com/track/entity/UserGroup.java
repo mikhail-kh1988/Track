@@ -18,11 +18,11 @@ public class UserGroup {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
-    private User user;
+    private User users;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "groups_id")
-    private Group group;
+    private Group groups;
 
     private LocalDateTime createDate;
 

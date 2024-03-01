@@ -73,7 +73,7 @@ create table category(
 );
 
 create table status(
-	id int,
+	id Serial,
 	name varchar(64),
 	orders int,
 	closed boolean,
@@ -84,7 +84,7 @@ create table status(
 create table track(
 	id Serial,
 	name varchar(256),
-	projects_id int
+	project_id int
 );
 
 create table sprints(
@@ -109,7 +109,8 @@ create table bind_issue(
 	id Serial,
 	bind_user_id int,
 	create_date timeStamp,
-	issue_id int
+	issue_id int,
+	child_issue_id int
 );
 
 create table projects_groups(
@@ -141,7 +142,8 @@ create table issues(
 	parent boolean,
 	version varchar(128),
 	state int,
-	time_cost int
+	planing_time_cost int,
+	actual_time_cost int
 );
 
 create table comments_issues(
@@ -160,11 +162,26 @@ create table files(
 	user_id int
 );
 
+create table issue_files(
+	id Serial,
+	issues_id int,
+	attachment_id int,
+	create_date timestamp
+);
+
 create table time_cost(
 	id Serial,
 	issue_id int,
 	comment varchar(1024),
 	time int,
 	date date,
+	create_date timestamp
+);
+
+
+create table issues_time_cost(
+	id Serial,
+	issue_id int,
+	time_cost_id int,
 	create_date timestamp
 );

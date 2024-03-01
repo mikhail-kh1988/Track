@@ -4,6 +4,8 @@ import com.track.entity.issue.Issue;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,12 @@ public interface IssueRepository extends CrudRepository<Issue, Long> {
     List<Issue> findByLose(Boolean isLose);
     List<Issue> findByAssignId(Long assignId);
     List<Issue> findByCreateById(Long createById);
-    @Query("select * from issues ORDER BY id DESC LIMIT 1")
+    @Query(value = "select * from issues ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Optional<Issue> findByLastRecord();
 
+    @Query(value =  "select * from issues i \n" +
+                    "where closed = false \n" +
+                    "and short_description like '%задача%';", nativeQuery = true)
+    Optional<Issue> findByLikeShortDescription();
 
 }

@@ -27,6 +27,6 @@ public class Sprint {
     private boolean closed;
 
     @OneToMany(mappedBy = "sprints")
-    private List<SprintIssue> sprintIssueList;
+    private List<SprintIssue> sprintsIssue;
 
 }

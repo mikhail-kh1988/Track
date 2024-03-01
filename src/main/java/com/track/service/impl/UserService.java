@@ -4,6 +4,7 @@ import com.track.dto.UserDto;
 import com.track.entity.Role;
 import com.track.entity.User;
 import com.track.entity.UserRole;
+import com.track.exception.NotFoundInternalUserException;
 import com.track.repository.RoleRepository;
 import com.track.repository.UserRepository;
 import com.track.repository.UsersRolesRepository;
@@ -161,7 +162,9 @@ public class UserService implements IUserService {
 
     @Override
     public User findUserById(long ownerId) {
-        return userRepository.findById(ownerId).get();
+        if (userRepository.findById(ownerId).isPresent())
+            return userRepository.findById(ownerId).get();
+        else throw new NotFoundInternalUserException("По указанному ID пользователь не найден.");
     }
 
     @Override

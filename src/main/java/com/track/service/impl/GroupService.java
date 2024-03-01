@@ -112,8 +112,8 @@ public class GroupService implements IGroupService {
             User createBy = userService.findUserById(createByUserID);
 
             UserGroup userGroup = new UserGroup();
-            userGroup.setUser(user);
-            userGroup.setGroup(group);
+            userGroup.setUsers(user);
+            userGroup.setGroups(group);
             userGroup.setCreateDate(LocalDateTime.now());
             userGroup.setCreateBy(createBy);
 
@@ -137,15 +137,15 @@ public class GroupService implements IGroupService {
 
             Long tempId = 0L;
 
-            for (UserGroup userGroup: group.getGroupList()) {
-                if (userGroup.getUser().getId() == user.getId()){
+            for (UserGroup userGroup: group.getGroupsList()) {
+                if (userGroup.getUsers().getId() == user.getId()){
                     tempId = userGroup.getId();
                     removeUserFromGroup.setId(userGroup.getId());
                 }
             }
 
-            removeUserFromGroup.setUser(null);
-            removeUserFromGroup.setGroup(null);
+            removeUserFromGroup.setUsers(null);
+            removeUserFromGroup.setGroups(null);
 
             userGroupRepository.save(removeUserFromGroup);
 
@@ -178,8 +178,8 @@ public class GroupService implements IGroupService {
 
         Group group = groupRepository.findGroupByName(groupName);
 
-        for (UserGroup ug: group.getGroupList()) {
-            userList.add(ug.getUser());
+        for (UserGroup ug: group.getGroupsList()) {
+            userList.add(ug.getUsers());
         }
 
         return userList;
@@ -191,8 +191,8 @@ public class GroupService implements IGroupService {
 
         Group group = groupRepository.findById(groupID).get();
 
-        for (UserGroup ug: group.getGroupList()) {
-            userList.add(ug.getUser());
+        for (UserGroup ug: group.getGroupsList()) {
+            userList.add(ug.getUsers());
         }
 
         return userList;

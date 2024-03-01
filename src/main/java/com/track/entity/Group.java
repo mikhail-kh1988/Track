@@ -33,7 +33,7 @@ public class Group {
     private User createBy;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "group")
-    private List<UserGroup> groupList;
+    @OneToMany(mappedBy = "groups")
+    private List<UserGroup> groupsList;
 
 }

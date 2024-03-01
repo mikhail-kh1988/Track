@@ -1,3 +1,4 @@
+/*
 package com.track.repository;
 
 import com.track.entity.issue.TimeCost;
@@ -8,3 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface TimeCostRepository extends CrudRepository<TimeCost, Long> {
 
 }
+*/

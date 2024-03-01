@@ -3,9 +3,10 @@ package com.track.service;
 import com.track.dto.CommentDto;
 import com.track.dto.IssueDto;
 import com.track.dto.UpdateIssueDto;
+import com.track.dto.output.Track;
 import com.track.entity.issue.Attachment;
 import com.track.entity.issue.Issue;
-import com.track.entity.issue.TimeCost;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,12 +16,12 @@ public interface IIssueService {
     boolean createNewIssue(IssueDto dto);
     boolean changeIssue(UpdateIssueDto dto);
     boolean deleteIssue(String externalId);
-    Issue findIssueByExternalId(String externalId);
-    boolean bindIssues(String parentId, String childId);
+    Track findIssueByExternalId(String externalId);
+    boolean bindIssues(String parentId, String childId, Long userId);
     void addCommentInIssue(CommentDto dto);
     void addResponseComment(CommentDto dto, Long commentId);
     boolean addAttachmentInIssue(String externalId, Attachment attachment);
-    boolean addTimeCostInIssue(String externalId, TimeCost cost);
+    //boolean addTimeCostInIssue(String externalId, TimeCost cost);
     boolean removeTimeCostFromIssue(String externalId, Long costId);
     boolean removeAttachmentFromIssue(Long attachId);
     List<Issue> findIssueByProjectId(Long projectId);

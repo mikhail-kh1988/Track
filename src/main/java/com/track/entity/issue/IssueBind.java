@@ -24,5 +24,10 @@ public class IssueBind {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "issue_id")
-    private Issue issue;
+    private Issue issues;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "child_issue_id")
+    private Issue childIssue;
 }

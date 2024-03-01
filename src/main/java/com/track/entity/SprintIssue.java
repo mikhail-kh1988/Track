@@ -17,17 +17,18 @@ public class SprintIssue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprints;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "issue_id")
+    private Issue issues;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User addUserBy;
 
     private LocalDateTime createDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sprints_id")
-    private Sprint sprint;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "issue_id")
-    private Issue issue;
 
 }

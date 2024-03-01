@@ -95,8 +95,9 @@ public class ProjectService implements IProjectService {
 
         Category category = categoryRepository.findByName(categoryName);
 
-        if (category != null){
+        if (category == null){
 
+            category = new Category();
             category.setName(categoryName);
             category.setProject(project);
 

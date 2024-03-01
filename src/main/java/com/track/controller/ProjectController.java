@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/track/{name}")
-    public ResponseEntity<?> createNewTrack(@PathVariable String name, Long projectId){
+    public ResponseEntity<?> createNewTrack(@PathVariable String name, @PathVariable Long projectId){
         return ResponseEntity.ok(projectService.createNewTrack(name, projectId));
     }
     @PutMapping("/status/create")
@@ -30,7 +30,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/category/{name}")
-    public ResponseEntity<?> createNewCategory(@PathVariable String name, Long projectId){
+    public ResponseEntity<?> createNewCategory(@PathVariable String name, @PathVariable Long projectId){
         return ResponseEntity.ok(projectService.createNewCategory(projectId, name));
     }
 

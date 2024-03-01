@@ -51,11 +51,12 @@ public class Issue {
     private boolean parent;
     private String version;
     private int state;
-    private int timeCost;
+    private int planingTimeCost;
+    private int actualTimeCost;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<IssueComment> issueCommentList;
+    private List<IssueComment> issueComment;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
@@ -63,14 +64,19 @@ public class Issue {
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<SprintIssue> sprintIssueList;
+    private List<SprintIssue> sprintIssue;
 
     @JsonIgnore
     @OneToMany(mappedBy = "issues")
     private List<IssueAttachment> issueAttachments;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<IssueTimeCost> issueTimeCosts;
+    private List<IssueTimeCost> issueTimeCost;*/
+
+
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "issues")
+    private List<Action> actionIssues;*/
 
 }

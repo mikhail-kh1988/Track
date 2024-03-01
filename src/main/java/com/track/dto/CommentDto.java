@@ -10,5 +10,6 @@ public class CommentDto {
     private String externalIdIssue;
     private String commentBody;
     private long userId;
+    private long recipientUserId;
 
 }

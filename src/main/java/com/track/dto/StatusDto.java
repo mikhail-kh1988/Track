@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class StatusDto {
 
-    private Long id;
     private String name;
     private int order;
     private Long project_id;

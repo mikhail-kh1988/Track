@@ -1,5 +1,7 @@
+/*
 package com.track.entity.issue;
 
+import com.track.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +22,18 @@ public class TimeCost {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Issue issue;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private User createBy;
+
     private String comment;
     private int time;
     private LocalDate date;
     private LocalDateTime createDate;
+    private boolean day;
+    private boolean hours;
+    private boolean minutes;
+    private boolean seconds;
+
 
 }
+*/
