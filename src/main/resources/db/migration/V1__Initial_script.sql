@@ -34,6 +34,7 @@ create or replace table groups(
     id Serial not null primary key,
     group_name varchar(128),
     active boolean,
+    approve boolean,
     status int,
     create_date timestamp,
     owner_id int,
@@ -91,6 +92,7 @@ create table sprints(
 	id Serial,
 	start_date timestamp,
 	end_date timestamp,
+	create_date timestamp,
 	name varchar(128),
 	user_id int,
 	closed boolean
@@ -169,13 +171,34 @@ create table issue_files(
 	create_date timestamp
 );
 
+create table actions(
+	id Serial,
+	create_date timestamp,
+	describe varchar(256),
+	create_by_id int
+);
+
+
+create table issue_actions(
+	id Serial,
+	issue_id int,
+	action_id int,
+	create_date timestamp
+);
+
+
 create table time_cost(
 	id Serial,
 	issue_id int,
+	create_by_id int,
 	comment varchar(1024),
 	time int,
-	date date,
-	create_date timestamp
+	date_start date,
+	date_stop date,
+	create_date timestamp,
+	day boolean,
+	hours boolean,
+	minutes boolean
 );
 
 

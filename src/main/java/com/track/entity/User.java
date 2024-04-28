@@ -23,6 +23,7 @@ public class User {
 
     private String email;
     private String login;
+    @JsonIgnore
     private String password;
     private String jobTitle;
     private String department;

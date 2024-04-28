@@ -26,5 +26,7 @@ public class UpdateIssueDto {
     private long assignId;
     private long assignGroupId;
     private String version;
+    private long changeByUserId;
+    private int planingTimeCost;
 
 }

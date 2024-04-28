@@ -29,7 +29,7 @@ public class RFC {
     private LocalDateTime actualStartWorkDate;
     private LocalDateTime actualEndWorkDate;
     private LocalDateTime closeDate;
-    private List<User> appruvUsers;
+    private Group approveGroup;
     private List<Issue> issueList;
 
 

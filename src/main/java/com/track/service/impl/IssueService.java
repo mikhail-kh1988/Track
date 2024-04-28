@@ -2,20 +2,25 @@ package com.track.service.impl;
 
 import com.track.dto.CommentDto;
 import com.track.dto.IssueDto;
+import com.track.dto.TimeCostDto;
 import com.track.dto.UpdateIssueDto;
 import com.track.dto.output.Track;
-import com.track.entity.Group;
-import com.track.entity.Project;
-import com.track.entity.Status;
-import com.track.entity.User;
+import com.track.entity.*;
 import com.track.entity.issue.*;
 
+import com.track.exception.NotFoundGroupException;
 import com.track.exception.NotFoundIssue;
+import com.track.exception.NotFoundRoleUserException;
+import com.track.exception.NotFoundUserException;
 import com.track.repository.*;
+import com.track.service.IActionService;
 import com.track.service.IIssueService;
 import com.track.service.IProjectService;
 import com.track.service.IUserService;
 import com.track.tools.IssueToTrackTranslator;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,17 +52,23 @@ public class IssueService implements IIssueService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    /*@Autowired
-    private TimeCostRepository timeCostRepository;*/
-
     @Autowired
     private TrackRepository trackRepository;
 
     @Autowired
     private IUserService userService;
-    
+
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private IActionService actionService;
+
+    @Autowired
+    private TimeCostRepository timeCostRepository;
+
+    @Autowired
+    private IssueTimeCostRepository issueTimeCostRepository;
 
     @Override
     public boolean createNewIssue(IssueDto dto) {
@@ -67,25 +78,25 @@ public class IssueService implements IIssueService {
         issue.setCreateDate(LocalDateTime.now());
         issue.setShortDescription(dto.getShortDescription());
         issue.setDescriptionBody(dto.getDescriptionBody());
-        
+
         //Check priority
         int tempPriority = dto.getPriority();
-        
+
         if (tempPriority > 3) {
             issue.setPriority(3);
         }else {
             issue.setPriority(dto.getPriority());
         }
-        
+
         // Check user
         Long tempUserId = userService.findUserById(dto.getCreateByUserId()).getId();
-        
+
         if (tempUserId == null) {
             issue.setCreateBy(userService.findUserById(2L));
         }else {
             issue.setCreateBy(userService.findUserById(dto.getCreateByUserId()));
         }
-        
+
         issue.setProject(projectService.findProjectByID(dto.getProjectId()));
         issue.setTrackName(trackRepository.findById(dto.getTrackId()).get().getName());
         issue.setExternalId(createExternalId(projectService.findProjectByID(dto.getProjectId())));
@@ -100,6 +111,7 @@ public class IssueService implements IIssueService {
 
         issueRepository.save(issue);
 
+        actionService.addAction("New Issue registered, by user "+userService.findUserById(dto.getCreateByUserId()).getName()+" .", dto.getCreateByUserId(), issue.getExternalId());
         return false;
     }
 
@@ -125,13 +137,6 @@ public class IssueService implements IIssueService {
 
         return templateId;
     }
-    
-    private boolean checkDtoBeforeChangeIssue(UpdateIssueDto dto){
-
-
-        return false;
-
-    }
 
     @Override
     public boolean changeIssue(UpdateIssueDto dto) {
@@ -140,66 +145,116 @@ public class IssueService implements IIssueService {
                 throw new NotFoundIssue("");
         }
 
-            Issue issue = issueRepository.findByExternalId(dto.getExternalId());
+        Issue issue = issueRepository.findByExternalId(dto.getExternalId());
 
-            if (dto.getPriority() > 3)
-                issue.setPriority(3);
-            issue.setPriority(dto.getPriority());
+        if (dto.getPriority() > 4) {
+            issue.setPriority(4);
+        }else {
+            changePriority(issue, dto.getPriority(), dto.getChangeByUserId());
+        }
+        if (dto.getCategoryId() != 0) {
+            String oldCategoryName = issue.getCategory().getName();
+            issue.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
+            actionService.addAction("Change category Issue, old value \" "+oldCategoryName+" \", new value \" "+categoryRepository.findById(dto.getCategoryId()).get().getName()+" \" change by user " + userService.findUserById(dto.getChangeByUserId()).getName() + " .", dto.getChangeByUserId(), issue.getExternalId());
+        }else {
+            issue.setCategory(null);
+        }
+        if (dto.getStatusId() != 0) {
+            issue.setStatus(statusRepository.findById(dto.getStatusId()).get());
+            actionService.addAction("Change status Issue, by user " + userService.findUserById(dto.getChangeByUserId()).getName() + " .", dto.getChangeByUserId(), issue.getExternalId());
+        }else {
+            issue.setStatus(null);
+        }
+        if (dto.getProjectId() != 0) {
+            changeProject(issue, dto.getProjectId(), dto.getChangeByUserId());
+        }else {
+            issue.setProject(null);
+        }
+        if (!dto.getShortDescription().isEmpty()) {
+            issue.setShortDescription(dto.getShortDescription());
+            actionService.addAction("Change short description Issue, by user " + userService.findUserById(dto.getChangeByUserId()).getName() + " .", dto.getChangeByUserId(), issue.getExternalId());
+        }
+        if (!dto.getDescriptionBody().isEmpty()) {
+            issue.setDescriptionBody(dto.getDescriptionBody());
+            actionService.addAction("Change description body Issue, by user "+userService.findUserById(dto.getChangeByUserId()).getName()+" .", dto.getChangeByUserId(), issue.getExternalId());
+        }
+        if (!dto.getResolution().isEmpty()) {
+            issue.setClosed(true);
+            issue.setResolution(dto.getResolution());
+            actionService.addAction("Add resolution by user "+userService.findUserById(dto.getChangeByUserId()).getName()+" .", dto.getChangeByUserId(), issue.getExternalId());
+        }
 
-            if (dto.getCategoryId() != 0)
-                issue.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
-            else
-                issue.setCategory(null);
+        if (dto.getState() != 0) {
+            issue.setState(dto.getState());
+            actionService.addAction("Change state Issue, by user " + userService.findUserById(dto.getChangeByUserId()).getName() + " .", dto.getChangeByUserId(), issue.getExternalId());
+        }else {
+            issue.setState(0);
+        }
+        if (dto.getCreateByUserId() != 0) {
+            issue.setCreateBy(userService.findUserById(dto.getCreateByUserId()));
+            actionService.addAction("Change create by user Issue, by user "+userService.findUserById(dto.getChangeByUserId()).getName()+" .", dto.getChangeByUserId(), issue.getExternalId());
+        }else {
+            issue.setCreateBy(null);
+        }
+        if (dto.getAssignId() != 0) {
+            issue.setAssign(userService.findUserById(dto.getAssignId()));
+            actionService.addAction("Change assignee user Issue, by user "+userService.findUserById(dto.getChangeByUserId()).getName()+" .", dto.getChangeByUserId(), issue.getExternalId());
+        }
+        if (dto.getAssignGroupId() != 0) {
+            issue.setAssignGroup(groupRepository.findById(dto.getAssignGroupId()).get());
+            actionService.addAction("Change assignee group Issue, by user "+userService.findUserById(dto.getChangeByUserId()).getName()+" .", dto.getChangeByUserId(), issue.getExternalId());
+        }
+        if (dto.getVersion() != null)
+            issue.setVersion(dto.getVersion());
 
-            if (dto.getStatusId() != 0)
-                issue.setStatus(statusRepository.findById(dto.getStatusId()).get());
-            else
-                issue.setStatus(null);
+        if (dto.getPlaningTimeCost() != 0){
+            issue.setPlaningTimeCost(dto.getPlaningTimeCost());
+        }
 
-            if (dto.getProjectId() != 0)
-                issue.setProject(projectService.findProjectByID(dto.getProjectId()));
-            else
-                issue.setProject(null);
+        //TODD Добавить проверку на изменение даты.
+        issue.setLose(dto.isLose());
+        issue.setStartDate(dto.getStartDate());
+        issue.setEndDate(dto.getEndDate());
+        issue.setLastChangeDate(LocalDateTime.now());
 
-            if (!dto.getShortDescription().isEmpty())
-                issue.setShortDescription(dto.getShortDescription());
+        issueRepository.save(issue);
 
-            if (!dto.getDescriptionBody().isEmpty())
-                issue.setDescriptionBody(dto.getDescriptionBody());
+        return true;
 
-            if (!dto.getResolution().isEmpty()) {
-                issue.setClosed(true);
-                issue.setResolution(dto.getResolution());
+    }
+
+    private void changeProject(Issue issue, long newProjectId, long changeByUserId){
+        if (checkUserRole(changeByUserId, "MANAGER")){
+                String oldProjectName = issue.getProject().getName();
+                issue.setProject(projectService.findProjectByID(newProjectId));
+                actionService.addAction("Change project Issue, old value ' "+oldProjectName+" ', new value ' "+projectService.findProjectByID(newProjectId).getName()+" ', change by user " + userService.findUserById(changeByUserId).getName() + " .", changeByUserId, issue.getExternalId());
+            }else {
+                throw new NotFoundRoleUserException("Not found role from user!");
+            }
+    }
+
+
+
+
+    private void changePriority(Issue issue, int newPriority, long changeUserID){
+        if (checkUserRole(changeUserID, "MANAGER")) {
+            int oldPriority = issue.getPriority();
+            issue.setPriority(newPriority);
+            actionService.addAction("Change priority Issue, old value " + oldPriority + ", new value " + newPriority + " changed by user " + userService.findUserById(changeUserID).getName() + " .", changeUserID, issue.getExternalId());
+        }else {
+            throw new NotFoundRoleUserException("Not found role from user!");
+        }
+    }
+
+    private boolean checkUserRole(long userId, String roleName){
+        User changeUser = userService.findUserById(userId);
+        for (UserRole role: changeUser.getRoleList()){
+            if (role.getRoles().getName().equals(roleName) & role.getRoles().isWrite()) {
+                return true;
             }
 
-            if (dto.getState() != 0)
-                issue.setState(dto.getState());
-            else
-                issue.setState(0);
-
-            if (dto.getCreateByUserId() != 0)
-                issue.setCreateBy(userService.findUserById(dto.getCreateByUserId()));
-            else
-                issue.setCreateBy(null);
-
-            if (dto.getAssignId() != 0)
-                issue.setAssign(userService.findUserById(dto.getAssignId()));
-
-            if (dto.getAssignGroupId() != 0)
-                issue.setAssignGroup(groupRepository.findById(dto.getAssignGroupId()).get());
-
-            if (dto.getVersion() != null)
-                issue.setVersion(dto.getVersion());
-
-            issue.setLose(dto.isLose());
-            issue.setStartDate(dto.getStartDate());
-            issue.setEndDate(dto.getEndDate());
-            issue.setLastChangeDate(LocalDateTime.now());
-
-            issueRepository.save(issue);
-
-            return true;
-
+        }
+        return false;
     }
 
 
@@ -219,6 +274,11 @@ public class IssueService implements IIssueService {
     }
 
     @Override
+    public Issue findIssueInternalByExternalId(String extId) {
+        return issueRepository.findByExternalId(extId);
+    }
+
+    @Override
     public boolean bindIssues(String parentId, String childId, Long userId) {
 
         Issue parentIssue = issueRepository.findByExternalId(parentId);
@@ -235,21 +295,13 @@ public class IssueService implements IIssueService {
 
         bindIssueRepository.save(issueBinds);
 
-        /*List<IssueBind> currentBindIssue = parentIssue.getIssuesListBind();
-        if (currentBindIssue == null){
-            currentBindIssue = new ArrayList<>();
-        }
-
-        currentBindIssue.add(issueBinds);
-
-        parentIssue.setIssuesListBind(currentBindIssue);
-        */
-
         if (!parentIssue.isParent()) {
             parentIssue.setParent(true);
         }
 
         issueRepository.save(parentIssue);
+
+        actionService.addAction("Add connection between parent issue "+parentId+" and child issue "+childIssue+" by user "+userService.findUserById(userId).getName()+" .", userId, parentIssue.getExternalId());
 
         return true;
     }
@@ -284,6 +336,8 @@ public class IssueService implements IIssueService {
         commentRepository.save(comment);
         commentIssueRepository.save(issueComment);
 
+        actionService.addAction("Add comment by user "+userService.findUserById(dto.getUserId()).getName()+" .", dto.getUserId(), issue.getExternalId());
+
     }
 
     @Override
@@ -315,6 +369,59 @@ public class IssueService implements IIssueService {
         issueRepository.save(issue);
         commentRepository.save(comment);
         commentIssueRepository.save(issueComment);
+
+        actionService.addAction("Add response comment by user "+userService.findUserById(dto.getUserId()).getName()+" .", dto.getUserId(), issue.getExternalId());
+    }
+
+    @Override
+    public boolean addTimeCost(TimeCostDto dto) {
+        TimeCost timeCost = new TimeCost();
+        Issue issue = issueRepository.findByExternalId(dto.getExternalId());
+        IssueTimeCost issueTimeCost = new IssueTimeCost();
+
+        switch (dto.getTime().charAt(dto.getTime().length() - 1)){
+            case ('h'):
+                timeCost.setHours(true);
+                break;
+
+            case ('d'):
+                timeCost.setDay(true);
+                break;
+
+            case ('m'):
+                timeCost.setMinutes(true);
+                break;
+
+            default:
+                timeCost.setHours(true);
+                break;
+        }
+
+        timeCost.setIssue(issue);
+        timeCost.setCreateBy(userService.findUserById(dto.getCreateByUserId()));
+        timeCost.setComment(dto.getComment());
+        timeCost.setTime(Integer.parseInt(dto.getTime()));
+        timeCost.setDateStart(dto.getDateStart());
+        timeCost.setDateStop(dto.getDateStop());
+        timeCost.setCreateDate(LocalDateTime.now());
+
+        timeCostRepository.save(timeCost);
+
+        issueTimeCost.setTimeCost(timeCost);
+        issueTimeCost.setIssues(issue);
+        issueTimeCost.setCreateDate(LocalDateTime.now());
+
+        issueTimeCostRepository.save(issueTimeCost);
+
+        int currentActualTimeCost = issue.getActualTimeCost();
+
+        issue.setActualTimeCost(currentActualTimeCost + Integer.parseInt(dto.getTime()));
+
+        issueRepository.save(issue);
+
+        actionService.addAction("Add into issue time cost. ", dto.getCreateByUserId(), issue.getExternalId());
+
+        return true;
     }
 
     @Override
@@ -322,14 +429,11 @@ public class IssueService implements IIssueService {
         return false;
     }
 
-    /*@Override
-    public boolean addTimeCostInIssue(String externalId, TimeCost cost) {
-        return false;
-    }*/
 
     @Override
     public boolean removeTimeCostFromIssue(String externalId, Long costId) {
-        return false;
+
+       return true;
     }
 
     @Override
@@ -338,22 +442,28 @@ public class IssueService implements IIssueService {
     }
 
     @Override
-    public List<Issue> findIssueByProjectId(Long projectId) {
-        return issueRepository.findByProjectId(projectId);
+    public List<Track> findIssueByProjectId(Long projectId) {
+
+        List<Track> trackList = new ArrayList<>();
+
+        for (Issue issue: issueRepository.findByProjectId(projectId))
+            trackList.add(IssueToTrackTranslator.getTrack(issue));
+
+        return trackList;
     }
 
     @Override
-    public List<Issue> findBindIssue(String externalId) {
+    public List<Track> findBindIssue(String externalId) {
 
         Issue issue = issueRepository.findByExternalId(externalId);
 
-        List<Issue> issueList = new ArrayList<>();
+        List<Track> trackList = new ArrayList<>();
 
         for(IssueBind bi: issue.getIssuesListBind()){
-            issueList.add(bi.getIssues());
+            trackList.add(IssueToTrackTranslator.getTrack(bi.getIssues()));
         }
 
-        return issueList;
+        return trackList;
     }
 
     @Override
@@ -377,20 +487,18 @@ public class IssueService implements IIssueService {
     @Override
     public boolean assignUser(String externalId, Long userId) {
         // Find Issue
-        Issue issue = issueRepository.findByExternalId(externalId);
-        if (issue == null){
-              return false;
+        if (issueRepository.findByExternalId(externalId) == null) {
+            throw new NotFoundIssue("Issue not found!");
+        }
+        //Find User
+        if (userService.findUserById(userId) == null) {
+            throw new NotFoundUserException("User not found!");
         }
 
-        //Find User
+        Issue issue = issueRepository.findByExternalId(externalId);
         User user = userService.findUserById(userId);
 
-        if (user == null){
-            return false;
-        }
-
         issue.setAssign(user);
-
         issueRepository.save(issue);
 
         return true;
@@ -399,23 +507,18 @@ public class IssueService implements IIssueService {
     @Override
     public boolean assignGroup(String externalId, Long groupId) {
 
+        if (issueRepository.findByExternalId(externalId) == null)
+            throw new NotFoundIssue("Issue not found!");
+
+
+        if (groupRepository.findById(groupId).isEmpty())
+            throw new NotFoundGroupException("Group not found!");
+
+
         Issue issue = issueRepository.findByExternalId(externalId);
-        if (issue == null){
-              return false;
-        }
-
-        Group group = null;
-
-        if (groupRepository.findById(groupId).isPresent()){
-
-            group = groupRepository.findById(groupId).get();
-
-        }else {
-            return false;
-        }
+        Group group = groupRepository.findById(groupId).get();
 
         issue.setAssignGroup(group);
-
         issueRepository.save(issue);
 
         return true;
@@ -447,7 +550,6 @@ public class IssueService implements IIssueService {
         issue.setStatus(newStatus);
 
         issueRepository.save(issue);
-
     }
 
     @Override

@@ -2,8 +2,7 @@ package com.track.service;
 
 import com.track.dto.ChangeDateSprintDto;
 import com.track.dto.SprintDto;
-import com.track.entity.issue.Issue;
-import com.track.entity.Sprint;
+import com.track.dto.output.Track;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,10 +11,10 @@ public interface ISprintService {
 
     void createNewSprint(SprintDto dto);
     boolean deleteSprintById(long id);
-    boolean addIssueInSprint(Long issueId, Long sprintId);
-    boolean deleteIssueFromSprint(Long issueId, Long sprintId);
+    boolean addIssueInSprint(String issueId, Long sprintId);
+    boolean deleteIssueFromSprint(String issueId, Long sprintId);
     boolean changeDateIntoSprint(Long sprintId, ChangeDateSprintDto dto);
-    List<Issue> getIssuesFromSprintById(Long id);
-    List<Issue> getIssuesFromSprintByName(String name);
-    List<Sprint> getSprintsToday(LocalDate date);
+    List<Track> getIssuesFromSprintById(Long id);
+    List<Track> getIssuesFromSprintByName(String name);
+    List<Track> getSprintsToday(LocalDate date);
 }

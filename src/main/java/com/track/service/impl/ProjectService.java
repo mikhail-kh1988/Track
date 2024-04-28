@@ -231,6 +231,7 @@ public class ProjectService implements IProjectService {
         if (project != null){
 
             project.setDescription(dto.getDescription());
+            project.setPrefix(dto.getPrefix());
 
             projectRepository.save(project);
 

@@ -1,10 +1,10 @@
 package com.track.repository;
 
-import com.track.entity.issue.TimeCost;
+import com.track.entity.issue.IssueAction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TimeCostRepository extends CrudRepository<TimeCost, Long> {
+public interface IssueActionRepository extends CrudRepository<IssueAction, Long> {
 
 }

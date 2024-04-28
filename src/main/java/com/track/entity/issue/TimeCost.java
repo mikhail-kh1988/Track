@@ -1,4 +1,3 @@
-/*
 package com.track.entity.issue;
 
 import com.track.entity.User;
@@ -27,13 +26,11 @@ public class TimeCost {
 
     private String comment;
     private int time;
-    private LocalDate date;
+    private LocalDate dateStart;
+    private LocalDate dateStop;
     private LocalDateTime createDate;
     private boolean day;
     private boolean hours;
     private boolean minutes;
-    private boolean seconds;
-
 
 }
-*/

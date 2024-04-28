@@ -9,5 +9,6 @@ public class ProjectDto {
 
     private Long id;
     private String description;
+    private String prefix;
 
 }

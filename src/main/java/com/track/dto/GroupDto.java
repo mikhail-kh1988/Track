@@ -9,5 +9,6 @@ public class GroupDto {
 
     private String name;
     private int owner_id;
+    private boolean approve;
 
 }

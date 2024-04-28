@@ -19,6 +19,7 @@ public class Sprint {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private LocalDateTime createDate;
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

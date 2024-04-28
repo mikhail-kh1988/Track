@@ -70,13 +70,12 @@ public class Issue {
     @OneToMany(mappedBy = "issues")
     private List<IssueAttachment> issueAttachments;
 
-    /*@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<IssueTimeCost> issueTimeCost;*/
+    private List<IssueTimeCost> issueTimeCosts;
 
-
-    /*@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "issues")
-    private List<Action> actionIssues;*/
+    private List<IssueAction> issueActions;
 
 }

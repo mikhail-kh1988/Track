@@ -45,6 +45,8 @@ public class Track {
     private List<Note> notes;
     private List<File> files;
     private List<Track> bindTrack;
+    private List<Activity> activities;
+    private List<PlaningTime> planingTimes;
 
 
 }

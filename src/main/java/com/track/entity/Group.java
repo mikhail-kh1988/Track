@@ -22,6 +22,7 @@ public class Group {
     @Column(name = "group_name")
     private String name;
     private boolean active;
+    private boolean approve;
     private int status;
     private LocalDateTime createDate;
 
