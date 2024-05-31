@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcom to track application!</title>
+</head>
+<body>
+
+    <ul>
+        <li><a th:href="@{/ui/planing}"> Planing management</a></li>
+        <li><a th:href="@{/ui/project}"> Project management </a></li>
+        <li><a th:href="@{/ui/users}"> User and group management</a></li>
+        <li><a th:href="@{/ui/issue}"> Issue management </a></li>
+        <li><a th:href="@{/ui/preference}"> Preferences </a></li>
+        <li><a th:href="@{/ui/pages}">Page management</a></li>
+    </ul>
+
+    Projects:
+    <ul th:each="project:${projects}">
+        <li th:text="${project.name}"></li>
+    </ul>
+
+    Groups:
+    <ul th:each="group:${groups}">
+        <li th:text="${group.name}"></li>
+    </ul>
+
+    Pages:
+    <ul th:each="page:${pages}">
+        <li th:text="${page.shortNamePage}"></li>
+    </ul>
+
+
+</body>
+</html>

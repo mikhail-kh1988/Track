@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/issue")
 public class IssueController {
@@ -78,6 +80,21 @@ public class IssueController {
     @PostMapping("/addtimecost")
     public ResponseEntity<?> addTimeCost(@RequestBody TimeCostDto dto){
         return ResponseEntity.ok(issueService.addTimeCost(dto));
+    }
+
+    @DeleteMapping("/removetimecost/{issueId}/{costId}/{createById}")
+    public ResponseEntity<?> removeTimeCost(@PathVariable String issueId, @PathVariable long costId, @PathVariable long createById){
+        return ResponseEntity.ok(issueService.removeTimeCostFromIssue(issueId, costId, costId));
+    }
+
+    @GetMapping("/{start}/{end}/bycreate")
+    public ResponseEntity<?> getIssueBetweenCreateDate(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end){
+        return ResponseEntity.ok(issueService.findIssueByBetweenDate(start,end));
+    }
+
+    @GetMapping("/{start}/{end}/{se}/bydate")
+    public ResponseEntity<?> getIssueBetweenDate(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end, @PathVariable boolean se){
+        return ResponseEntity.ok(issueService.findByBetweenDateStartEnd(start,end, se));
     }
 
 }

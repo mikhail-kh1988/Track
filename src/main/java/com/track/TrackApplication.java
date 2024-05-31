@@ -9,10 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-@PropertySources({
+/*@PropertySources({
 		@PropertySource(value = "classpath:application.properties"),
 		@PropertySource(value = "file:../conf/external.properties", ignoreResourceNotFound = true)
-})
+})*/
+@PropertySource(value = "file:../conf/external.properties")
 @SpringBootApplication
 public class TrackApplication {
 

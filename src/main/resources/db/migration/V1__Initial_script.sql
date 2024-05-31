@@ -41,12 +41,12 @@ create or replace table groups(
     create_by_id int
 );
 
-create or replace table users_groups(
-    id Serial not null primary key,
-    users_id int,
-    groups_id int,
-    create_date timestamp,
-    create_by_id int
+create table projects_groups(
+	id Serial not null primary key,
+	projects_id int,
+	groups_id int,
+	create_date timestamp,
+	create_by_id int
 );
 
 create table projects(
@@ -78,6 +78,7 @@ create table status(
 	name varchar(64),
 	orders int,
 	closed boolean,
+	track_id int,
 	project_id int,
 	group_id int
 );
@@ -206,5 +207,41 @@ create table issues_time_cost(
 	id Serial,
 	issue_id int,
 	time_cost_id int,
+	create_date timestamp
+);
+
+create table pages(
+	id Serial not null primary key,
+	external_id varchar(32),
+	project_id int,
+	create_by_id int,
+	admin_by_id int,
+	create_date timestamp,
+	last_change_date timestamp,
+	stared bool,
+	open_comment bool,
+	child_page bool,
+	child_id int,
+	short_name_page varchar(128),
+	body text
+);
+
+create table childpages(
+	id Serial not null primary key,
+	external_id varchar(32),
+	create_by_id int,
+	admin_by_id int,
+	create_date timestamp,
+	last_change_date timestamp,
+	stared bool,
+	open_comment bool,
+	short_name_page varchar(128),
+	body text
+);
+
+create table pages_childpages(
+	id Serial,
+	pages_id int,
+	childpages_id int,
 	create_date timestamp
 );

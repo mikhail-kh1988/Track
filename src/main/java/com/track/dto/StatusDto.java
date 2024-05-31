@@ -10,6 +10,7 @@ public class StatusDto {
     private String name;
     private int order;
     private Long project_id;
+    private Long track_id;
     private Long group_id;
     private boolean closed;
 }

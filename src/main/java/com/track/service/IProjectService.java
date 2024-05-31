@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface IProjectService {
 
+    void createNewProjectFromUI(Project project);
     Boolean createNewProject(String name);
     Boolean createNewTrack(String trackName, Long projectId);
     Boolean createNewStatus(StatusDto dto);

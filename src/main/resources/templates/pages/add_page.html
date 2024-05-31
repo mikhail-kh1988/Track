@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new page</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/ui/pages/newpage/}" th:object="${new_page}" method="POST">
+
+    <input type="text" th:field="*{externalId}"> ext id<br>
+    <select th:field="*{project}">
+        <option th:each="project:${projects}"
+            th:value="${project.id}"
+            th:text="${project.name}">Projects</option>
+    </select><br>
+    <select th:field="*{createBy}">
+        <option th:each="user:${users}"
+                th:value="${user.id}"
+                th:text="${user.name}">Create by</option>
+    </select><br>
+
+
+    <select th:field="*{adminBy}">
+        <option th:each="user:${users}"
+                th:value="${user.id}"
+                th:text="${user.name}">Admin by</option>
+    </select><br>
+    <input type="checkbox" th:field="*{stared}">Stared<br>
+    <input type="checkbox" th:field="*{openComment}">OpenComment<br>
+    <input type="checkbox" th:field="*{childPage}"> is Child page<br>
+    <input type="text" th:field="*{shortNamePage}"> Short name page<br>
+    <textarea th:field="*{body}"> page body</textarea><br>
+
+    <button type="submit"> create new page </button>
+</form>
+
+<br>
+<a th:href="@{/ui/project}"> Back </a>
+
+</body>
+</html>

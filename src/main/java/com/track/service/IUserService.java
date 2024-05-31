@@ -12,17 +12,11 @@ public interface IUserService {
     boolean addUserRole(String userLogin, String role, Long createByLoginId);
     boolean deleteUser(String userLogin);
     boolean deleteRoleFromUser(String userLogin, String roleName);
-
     List<User> getAllUsers();
     List<Role> getUserRoles(String userLogin);
-
     User findUserById(long userId);
-
     boolean createNewRole(String nameRole);
-
     List<Role> getAllRoles();
-
     boolean setRoleRead(String roleName);
-
     boolean setRoleWrite(String roleName);
 }

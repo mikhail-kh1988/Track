@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new track</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/create_track}" th:object="${new_track}" method="POST">
+
+    Project: <select th:field="*{project}">
+                <option th:each="project:${AllProject}"
+                        th:value="${project.id}"
+                        th:text="${project.name}">Projects</option>
+            </select><br>
+    Name: <input type="text" th:field="*{name}"><br>
+
+    <button type="submit"> create track </button>
+</form>
+
+<br>
+<a th:href="@{/ui/project}"> Back </a>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project management</title>
+</head>
+<body>
+
+    <h2> Welcom to project management! </h2>
+    <h3>Projects: </h3>
+
+    <a th:href="@{/ui/main}"> Back main page </a>
+
+    <table>
+        <thead>
+            <th>id</th>
+            <th>name</th>
+            <th>description</th>
+            <th>prefix</th>
+            <th>create date</th>
+            <th>type</th>
+            <th>change</th>
+        </thead>
+        <tbody>
+            <tr th:each="project:${allProject}">
+                <td th:text="${project.id}"></td>
+                <td th:text="${project.name}"></td>
+                <td th:text="${project.description}"></td>
+                <td th:text="${project.prefix}"></td>
+                <td th:text="${project.createDate}"></td>
+                <td th:text="${project.type}"></td>
+                <td><a th:href="@{/ui/project/change/{id}(id=${project.id})}"> change</a> </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/ui/project/add}"> Add new project </a>
+</body>
+</html>

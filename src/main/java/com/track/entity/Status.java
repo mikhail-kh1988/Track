@@ -19,6 +19,9 @@ public class Status {
     private boolean closed;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Track track;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Project project;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

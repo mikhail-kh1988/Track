@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pages on Track</title>
+</head>
+<body>
+    <a th:href="@{/ui/main}"> Back main page </a>
+
+    <h2>List all pages on Track</h2>
+
+    <a th:href="@{/ui/pages/new}"> New page </a>
+
+    <ul th:each="page:${pages}">
+        <a th:href="@{/ui/pages/view/{id}(id=${page.id})}"><li th:text="${page.shortNamePage}"></li></a>
+    </ul>
+
+</body>
+</html>

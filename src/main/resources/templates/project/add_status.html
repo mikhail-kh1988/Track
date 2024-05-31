@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create status</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/create_status}" th:object="${new_status}" method="POST">
+
+    Project: <select th:field="*{project}">
+    <option th:each="project:${AllProject}"
+            th:value="${project.id}"
+            th:text="${project.name}">Projects</option>
+            </select><br>
+    Name:<input type="text" th:field="*{name}"><br>
+    Orders:<input type=number th:field="*{orders}"><br>
+    Closed:<input type=checkbox th:field="*{closed}"><br>
+    Groups: <select th:field="*{group}">
+                <option th:each="group:${AllGroups}"
+                    th:value="${group.id}"
+                    th:text="${group.name}">Groups</option>
+            </select><br>
+    Track: <select th:field="*{track}">
+                <option th:each="track:${AllTrack}"
+                        th:value="${track.id}"
+                        th:text="${track.name}">Tracks</option>
+            </select><br>
+
+
+
+    <button type="submit"> create status </button>
+</form>
+
+<br>
+<a th:href="@{/ui/project}"> Back </a>
+
+
+
+</body>
+</html>

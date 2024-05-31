@@ -23,14 +23,14 @@ public interface IIssueService {
     void addCommentInIssue(CommentDto dto);
     void addResponseComment(CommentDto dto, Long commentId);
     boolean addTimeCost(TimeCostDto dto);
+    boolean removeTimeCostFromIssue(String externalId, Long costId, Long changeUserId);
     boolean addAttachmentInIssue(String externalId, Attachment attachment);
-    //boolean addTimeCostInIssue(String externalId, TimeCost cost);
-    boolean removeTimeCostFromIssue(String externalId, Long costId);
     boolean removeAttachmentFromIssue(Long attachId);
     List<Track> findIssueByProjectId(Long projectId);
     List<Track> findBindIssue(String externalId);
     List<Issue> findIssueByField(int priorityId, Long statusId, Long categoryId, String trackName, Long assignId, Long createById);
-    List<Issue> findIssueByBetweenDate(LocalDateTime start, LocalDateTime end);
+    List<Track> findByBetweenDateStartEnd(LocalDateTime start, LocalDateTime end, Boolean StartEnd);
+    List<Track> findIssueByBetweenDate(LocalDateTime start, LocalDateTime end);
     boolean assignUser(String externalId, Long userId);
     boolean assignGroup(String externalId, Long groupId);
     // On Question.

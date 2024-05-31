@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Change issue</title>
+</head>
+<body>
+
+    <form action="#" th:action="@{/ui/issue/update}" th:object="${issue}" method="POST">
+
+        <input type="text" th:field="*{externalId}"></td><BR>
+        <input type="text" th:field="*{trackName}"></td><BR>
+        <input type="text" th:field="*{shortDescription}"></td><BR>
+        <input type="text" th:field="*{descriptionBody}"></td><BR>
+        <select th:field="*{project}">
+            <option th:each="project:${projects}"
+                    th:value="${project.id}"
+                    th:text="${project.name}">
+            </option>
+        </select><BR>
+        <select th:field="*{priority}">
+            <option value="1">Critical</option>
+            <option value="2">High</option>
+            <option value="3">Medium</option>
+            <option value="4">Low</option>
+        </select><BR>
+        <select th:field="*{status}">
+            <option th:each="status:${statuses}"
+                    th:value="${status.id}"
+                    th:text="${status.name}">
+            </option>
+        </select><BR>
+        <select th:field="*{category}">
+            <option th:each="category:${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}">
+            </option>
+        </select><BR>
+        <select th:field="*{assign}">
+            <option th:each="assign:${users}"
+                    th:value="${assign.id}"
+                    th:text="${assign.name}">
+            </option>
+        </select> user assign<BR>
+        <!--<select th:field="*{changeByUserId}">
+            <option th:each="assign:${users}"
+                    th:value="${assign.id}"
+                    th:text="${assign.name}">
+            </option>
+        </select> chenge by user<BR>-->
+        <input type="text" th:field="*{createDate}"></td> create date<BR>
+        <input type="text" th:field="*{lastChangeDate}"></td> last change date<BR>
+        <input type="text" th:field="*{startDate}"></td><BR>
+        <input type="text" th:field="*{endDate}"></td><BR>
+        <input type="text" th:field="*{lose}"></td><BR>
+        <input type="text" th:field="*{closed}"></td><BR>
+        <input type="text" th:field="*{parent}"></td><BR>
+        <input type="text" th:field="*{version}"></td><BR>
+        <input type="text" th:field="*{assign}"></td> assign_id<BR>
+        <input type="text" th:field="*{assignGroup}"></td> assign_grp_id<br>
+        <input type="text" th:field="*{resolution}"></td> resolution<BR>
+        <input type="text" th:field="*{planingTimeCost}"></td><BR>
+        <input type="text" th:field="*{actualTimeCost}"></td><BR>
+
+        <button type="submit"> Update issue </button>
+    </form>
+
+
+</body>
+</html>

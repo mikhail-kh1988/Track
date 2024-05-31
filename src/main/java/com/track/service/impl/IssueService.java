@@ -18,9 +18,6 @@ import com.track.service.IIssueService;
 import com.track.service.IProjectService;
 import com.track.service.IUserService;
 import com.track.tools.IssueToTrackTranslator;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -425,16 +422,28 @@ public class IssueService implements IIssueService {
     }
 
     @Override
+    public boolean removeTimeCostFromIssue(String externalId, Long costId, Long changeUserId) {
+
+        Issue issue = issueRepository.findByExternalId(externalId);
+
+        for (IssueTimeCost tc: issue.getIssueTimeCosts()){
+            if (tc.getTimeCost().getId() == costId){
+                tc.setTimeCost(null);
+                tc.setIssues(null);
+
+                issueTimeCostRepository.save(tc);
+            }
+        }
+
+        actionService.addAction("Remove time cost from issue.", changeUserId, issue.getExternalId());
+        return true;
+    }
+
+    @Override
     public boolean addAttachmentInIssue(String externalId, Attachment attachment) {
         return false;
     }
 
-
-    @Override
-    public boolean removeTimeCostFromIssue(String externalId, Long costId) {
-
-       return true;
-    }
 
     @Override
     public boolean removeAttachmentFromIssue(Long attachId) {
@@ -477,11 +486,41 @@ public class IssueService implements IIssueService {
     }
 
     @Override
-    public List<Issue> findIssueByBetweenDate(LocalDateTime start, LocalDateTime end) {
+    public List<Track> findByBetweenDateStartEnd(LocalDateTime start, LocalDateTime end, Boolean StartEnd) {
+        List<Track> tracks = new ArrayList<>();
 
+        if (StartEnd){
+            if (issueRepository.findAllByStartDateBetween(start, end).isEmpty())
+                throw new NotFoundIssue("Issues not found!");
 
+            for (Issue issue: issueRepository.findAllByStartDateBetween(start, end))
+                tracks.add(IssueToTrackTranslator.getTrack(issue));
 
-        return null;
+            return tracks;
+        }else {
+            if (issueRepository.findAllByEndDateBetween(start, end).isEmpty())
+                throw new NotFoundIssue("Issues not found");
+
+            for (Issue issue: issueRepository.findAllByEndDateBetween(start, end))
+                tracks.add(IssueToTrackTranslator.getTrack(issue));
+
+            return tracks;
+        }
+
+    }
+
+    @Override
+    public List<Track> findIssueByBetweenDate(LocalDateTime start, LocalDateTime end) {
+
+        if (issueRepository.findAllByCreateDateBetween(start, end).isEmpty())
+            throw new NotFoundIssue("Issues not found!");
+
+        List<Track> tracks = new ArrayList<>();
+
+        for (Issue issue: issueRepository.findAllByCreateDateBetween(start, end))
+            tracks.add(IssueToTrackTranslator.getTrack(issue));
+
+        return tracks;
     }
 
     @Override

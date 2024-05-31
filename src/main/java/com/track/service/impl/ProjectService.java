@@ -3,6 +3,7 @@ package com.track.service.impl;
 import com.track.dto.ProjectDto;
 import com.track.dto.StatusDto;
 import com.track.entity.*;
+import com.track.entity.issue.ProjectGroup;
 import com.track.repository.*;
 import com.track.service.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,12 @@ public class ProjectService implements IProjectService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Override
+    public void createNewProjectFromUI(Project project) {
+        project.setCreateDate(LocalDateTime.now());
+        projectRepository.save(project);
+    }
 
     @Override
     public Boolean createNewProject(String name) {
@@ -80,7 +87,15 @@ public class ProjectService implements IProjectService {
             status.setName(dto.getName());
             status.setClosed(dto.isClosed());
             status.setOrders(dto.getOrder());
-            status.setGroup(groupRepository.findById(dto.getGroup_id()).get());
+            if (trackRepository.findById(dto.getTrack_id()).isEmpty())
+                status.setTrack(null);
+            else
+                status.setTrack(trackRepository.findById(dto.getTrack_id()).get());
+
+            if (dto.getGroup_id() != null)
+                status.setGroup(groupRepository.findById(dto.getGroup_id()).get());
+            else
+                status.setGroup(null);
 
             statusRepository.save(status);
             return true;
@@ -288,18 +303,29 @@ public class ProjectService implements IProjectService {
 
         Group group = groupRepository.findById(groupId).get();
 
-        List<Group> groups = project.getGroups();
+        List<ProjectGroup> groups = project.getGroups();
 
         if(groups == null){
 
             groups = new ArrayList<>();
 
-            groups.add(group);
+            ProjectGroup pg = new ProjectGroup();
+            pg.setCreateDate(LocalDateTime.now());
+            pg.setGroups(group);
+            pg.setProject(project);
+
+            groups.add(pg);
 
             project.setGroups(groups);
         }else {
 
-            groups.add(group);
+            ProjectGroup projectGroup = new ProjectGroup();
+
+            projectGroup.setCreateDate(LocalDateTime.now());
+            projectGroup.setProject(project);
+            projectGroup.setGroups(group);
+
+            groups.add(projectGroup);
 
             project.setGroups(groups);
 
@@ -314,11 +340,11 @@ public class ProjectService implements IProjectService {
 
         Group group = groupRepository.findById(groupId).get();
 
-        List<Group> groupList = project.getGroups();
+        List<ProjectGroup> groupList = project.getGroups();
 
         for (int i = 0; i<groupList.size(); i++) {
 
-            if (groupList.get(i).getId() == group.getId())
+            if (groupList.get(i).getGroups().getId() == group.getId())
                 groupList.remove(i);
 
         }

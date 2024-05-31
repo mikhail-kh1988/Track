@@ -20,6 +20,9 @@ public interface IssueRepository extends CrudRepository<Issue, Long> {
     List<Issue> findByLose(Boolean isLose);
     List<Issue> findByAssignId(Long assignId);
     List<Issue> findByCreateById(Long createById);
+    List<Issue> findAllByStartDateBetween(LocalDateTime start, LocalDateTime end);
+    List<Issue> findAllByEndDateBetween(LocalDateTime start, LocalDateTime end);
+    List<Issue> findAllByCreateDateBetween(LocalDateTime start, LocalDateTime end);
     @Query(value = "select * from issues ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Optional<Issue> findByLastRecord();
 

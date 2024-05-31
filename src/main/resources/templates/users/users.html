@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User and group management</title>
+</head>
+<body>
+
+    <h2>Welcome to User and group management</h2>
+
+    <a th:href="@{/ui/main}"> Back main page </a>
+
+    <h3> Users:</h3>
+
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>email</th>
+        <th>login</th>
+        <th>password</th>
+        <th>jobTitle</th>
+        <th>department</th>
+        <th>phoneNumber</th>
+        <th>cnAdUser</th>
+        <th>status</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="user:${allUsers}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.jobTitle}"></td>
+            <td th:text="${user.department}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.cnAdUser}"></td>
+            <td th:text="${user.status}"></td>
+            <td> change </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3> Groups:</h3>
+
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>active</th>
+        <th>approve</th>
+        <th>status</th>
+        <th>createDate</th>
+        <th>owner</th>
+        <th>createBy</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="group:${allGroups}">
+            <td th:text="${group.id}"></td>
+            <td th:text="${group.name}"></td>
+            <td th:text="${group.active}"></td>
+            <td th:text="${group.approve}"></td>
+            <td th:text="${group.status}"></td>
+            <td th:text="${group.createDate}"></td>
+            <td th:text="${group.owner}"></td>
+            <td th:text="${group.createBy}"></td>
+            <td> change</a> </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View page</title>
+</head>
+<body>
+    <a th:href="@{/ui/main}"> Back main page </a>
+
+    <br>
+
+    <a th:href="@{/ui/pages}"> Back list pages </a>
+
+
+
+    <div class="buttons">
+        <div class="star"><BR>
+            <div th:text="${page.stared}">
+            </div>
+            <div>
+                <a th:href="@{/ui/pages/stared/{pageId}(pageId=${page.id})}"> Set star </a>
+            </div>
+        </div>
+        <div class="openComment"><BR>
+            <div th:text="${page.openComment}">
+
+            </div>
+        </div>
+
+        <div class="childPage"><BR>
+            <div th:text="${page.childPage}">
+
+            </div>
+        </div>
+    </div>
+
+    <p th:text="${page.shortNamePage}"> </p><BR>
+
+    <p th:text="${page.body}">
+
+</body>
+</html>

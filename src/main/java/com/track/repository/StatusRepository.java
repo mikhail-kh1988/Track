@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface StatusRepository extends CrudRepository<Status, Long> {
     List<Status> findByProjectId(Long id);
+    List<Status> findByTrackId(Long id);
 
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Change project</title>
+</head>
+<body>
+    <form action="#" th:action="@{/ui/project/save}" th:object="${project}" method="POST">
+
+        ID: <input type="number" th:field="*{id}"><br>
+        Name: <input type="text" th:field="*{name}"><br>
+        Description: <input type="text" th:field="*{description}"> <br>
+        Prefix: <input type="text" th:field="*{prefix}"> <br>
+        Create date: <input type="text" th:field="*{createDate}">
+        Type: <input type="number" th:field="*{type}"> <br>
+
+        <button type="submit"> Update project </button>
+    </form>
+    <BR>
+    Tracks  <a th:href="@{/ui/project/track}"> add track </a>
+    <table>
+        <thead>
+            <th>id</th>
+            <th>name</th>
+            <th>change</th>
+        </thead>
+        <tbody>
+            <tr th:each="tracks:${track}">
+                <td th:text="${tracks.id}"></td>
+                <td th:text="${tracks.name}"></td>
+                <td> <a> change </a></td>
+            </tr>
+        </tbody>
+    </table>
+<br>
+    Statuses <a th:href="@{/ui/project/status}"> add status </a>
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>orders</th>
+        <th>closed</th>
+        <th>Track</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="statuses:${status}">
+            <td th:text="${statuses.id}"></td>
+            <td th:text="${statuses.name}"></td>
+            <td th:text="${statuses.orders}"></td>
+            <td th:text="${statuses.closed}"></td>
+            <td th:test="${statuses.track.name}"></td>
+            <td> <a> change </a></td>
+        </tr>
+        </tbody>
+    </table>
+<br>
+    Categories  <a th:href="@{/ui/project/category}"> add category </a>
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="categores:${category}">
+            <td th:text="${categores.id}"></td>
+            <td th:text="${categores.name}"></td>
+            <td> <a> change </a></td>
+        </tr>
+        </tbody>
+    </table>
+<br>
+    Group of project
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="groups:${group}">
+            <td th:text="${groups.id}"></td>
+            <td th:text="${groups.name}"></td>
+            <td> <a> change </a></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+    <a th:href="@{/ui/project}"> Back </a>
+</body>
+</html>

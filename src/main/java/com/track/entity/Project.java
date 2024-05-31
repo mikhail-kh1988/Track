@@ -1,6 +1,7 @@
 package com.track.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.track.entity.issue.ProjectGroup;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Project {
     private int type;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Group> groups;
+    @OneToMany(mappedBy = "groups")
+    private List<ProjectGroup> groups;
 
 }
