@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new issue</title>
+</head>
+<body>
+
+    <a th:href="@{/ui/issue}"> Back issue page </a>
+
+    <form action="#" th:action="@{/ui/issue/createIssue}" th:object="${issueDto}" method="POST">
+
+        <select th:field="*{projectId}">
+            <option th:each="projectId:${projects}"
+                    th:value="${projectId.id}"
+                    th:text="${projectId.name}">
+            </option>
+        </select> Project <BR>
+
+        <select th:field="*{trackId}">
+            <option th:each="trackId:${tracks}"
+                    th:value="${trackId.id}"
+                    th:text="${trackId.name}">
+            </option>
+        </select> Track <BR>
+
+        <select th:field="*{priority}">
+            <option value="1">Critical</option>
+            <option value="2">High</option>
+            <option value="3">Medium</option>
+            <option value="4">Low</option>
+        </select> Priority <BR>
+
+        <select th:field="*{createByUserId}">
+            <option th:each="createByUserId:${users}"
+                    th:value="${createByUserId.id}"
+                    th:text="${createByUserId.name}">
+            </option>
+        </select> Create by user <BR>
+
+        <input type="text" th:field="*{shortDescription}"></td> Short description <BR>
+
+        <textarea th:field="*{descriptionBody}"> Description body</textarea><br>
+
+        <button type="submit"> Create issue </button>
+    </form>
+
+</body>
+</html>

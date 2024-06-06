@@ -7,8 +7,9 @@
 <body>
     <h2>Welcome to issue management</h2>
 
-    <a th:href="@{/ui/main}"> Back main page </a>
+    <a th:href="@{/ui/main}"> Back main page </a> <br>
 
+    <a th:href="@{/ui/issue/create}"> Create ISSUE </a>
     <table>
         <thead>
         <th>externalId</th>
@@ -26,7 +27,7 @@
         <th>assignGroupName</th>
         </thead>
         <tbody>
-        <tr th:each="issue:${issueByProject}">
+        <tr th:each="issue:${issues}">
             <td th:text="${issue.externalId}"></td>
             <td th:text="${issue.trackName}"></td>
             <td th:text="${issue.shortDescription}"></td>

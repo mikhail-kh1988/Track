@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View User</title>
+</head>
+<body>
+
+<a th:href="@{/ui/users/}"> Back users and group page </a>
+
+    <form action="#" th:action="@{/ui/users/updateUser}" th:object="${user}" method="POST">
+        <input type="text" th:field="*{name}"> name <br>
+        <input type="text" th:field="*{email}"> email <br>
+        <input type="text" th:field="*{login}"> login <br>
+        <input type="text" th:field="*{password}"> password <br>
+        <input type="text" th:field="*{jobTitle}"> jobTitle <br>
+        <input type="text" th:field="*{department}"> department <br>
+        <input type="text" th:field="*{phoneNumber}"> phoneNumber <br>
+        <input type="text" th:field="*{cnAdUser}"> cnAdUser <br>
+        <input type="text" th:field="*{status}"> status <br>
+
+        <button type="submit"> change user </button>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New group</title>
+</head>
+<body>
+
+    <a th:href="@{/ui/users/}"> Back users and group page </a>
+
+    <form action="#" th:action="@{/ui/users/create_group}" th:object="${group}" method="POST">
+        <select th:field="*{createBy}">
+            <option th:each="createBy:${createByUsers}"
+                th:value="${createBy.id}"
+                th:text="${createBy.name}">
+            </option>
+        </select> create by <br>
+
+        <select th:field="*{owner}">
+            <option th:each="owner:${createByUsers}"
+                    th:value="${owner.id}"
+                    th:text="${owner.name}">
+            </option>
+        </select> owner <br>
+
+        <input type="text" th:field="*{name}"> name <BR>
+        <input type="checkbox" th:field="*{active}"> active <BR>
+        <input type="checkbox" th:field="*{approve}"> approve <BR>
+        <input type="number" th:field="*{status}"> status <BR>
+
+        <button type="submit"> Create group </button>
+    </form>
+</body>
+</html>

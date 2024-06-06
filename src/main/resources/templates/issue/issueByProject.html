@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue management</title>
+</head>
+<body>
+<h2>Welcome to issue management</h2>
+
+<a th:href="@{/ui/main}"> Back main page </a> <BR>
+
+<a th:href="@{/ui/issue/createByProject/{id}(id=${prjID})}"> create issue </a>
+
+
+<table>
+    <thead>
+    <th>externalId</th>
+    <th>trackName</th>
+    <th>shortDescription</th>
+    <th>priorityName</th>
+    <th>status</th>
+    <th>createDate</th>
+    <th>lastChangeDate</th>
+    <th>startDate</th>
+    <th>endDate</th>
+    <th>lose</th>
+    <th>closed</th>
+    <th>assignName</th>
+    <th>assignGroupName</th>
+    </thead>
+    <tbody>
+    <tr th:each="issue:${issueByProject}">
+        <td th:text="${issue.externalId}"></td>
+        <td th:text="${issue.trackName}"></td>
+        <td th:text="${issue.shortDescription}"></td>
+        <td th:text="${issue.priorityName}"></td>
+        <td th:text="${issue.status}"></td>
+        <td th:text="${issue.createDate}"></td>
+        <td th:text="${issue.lastChangeDate}"></td>
+        <td th:text="${issue.startDate}"></td>
+        <td th:text="${issue.endDate}"></td>
+        <td th:text="${issue.lose}"></td>
+        <td th:text="${issue.closed}"></td>
+        <td th:text="${issue.lose}"></td>
+        <td th:text="${issue.assignName}"></td>
+        <td th:text="${issue.assignGroupName}"></td>
+        <td><a th:href="@{/ui/issue/change/{extId}(extId=${issue.externalId})}"> change</a> </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

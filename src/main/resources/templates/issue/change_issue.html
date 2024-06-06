@@ -5,8 +5,9 @@
     <title>Change issue</title>
 </head>
 <body>
+<a th:href="@{/ui/issue/{id}(id=${prjID})}"> Back </a>
 
-    <form action="#" th:action="@{/ui/issue/update}" th:object="${issue}" method="POST">
+<form action="#" th:action="@{/ui/issue/update}" th:object="${issue}" method="POST">
 
         <input type="text" th:field="*{externalId}"></td><BR>
         <input type="text" th:field="*{trackName}"></td><BR>
@@ -64,6 +65,64 @@
 
         <button type="submit"> Update issue </button>
     </form>
+
+    Add comment: <br>
+    <form action="#" th:action="@{/ui/issue/addComment}" th:object="${addComments}" method="POST">
+        <input type="hidden" th:field="*{externalIdIssue}"></td>
+        <select th:field="*{commentId}">
+            <option th:each="commentId:${comments}"
+                    th:value="${commentId.id}"
+                    th:text="${commentId.id}">
+            </option>
+        </select> comment response <br>
+
+        <input type="checkbox" th:field="*{response}"> response <br>
+
+        <select th:field="*{user}">
+            <option th:each="user:${users}"
+                    th:value="${user.id}"
+                    th:text="${user.name}">
+            </option>
+        </select> user create comment <BR>
+        <textarea th:field="*{body}"> Comment body</textarea><br>
+        <button type="submit"> add comment </button>
+    </form>
+
+    Add time cost:
+    <form action="#" th:action="@{/ui/issue/addTimeCost}" th:object="${addTimeCost}" method="POST">
+        <input type="hidden" th:field="*{externalId}"></td><br>
+        <input type="text" th:field="*{time}"> time<br>
+        <input type="text" th:field="*{comment}"> comment<br>
+        <select th:field="*{createByUserId}">
+            <option th:each="createByUserId:${users}"
+                    th:value="${createByUserId.id}"
+                    th:text="${createByUserId.name}">
+            </option>
+        </select> user create time cost  <BR>
+        <button type="submit"> add time cost </button>
+    </form>
+
+    <h3>Comments:</h3>
+    <div class="comments-view" th:each="comment:${comments}">
+        <div class="comments-id" th:text="${comment.id}"></div>
+        <div class="comments-body" th:text="${comment.body}"></div>
+        <div class="comments-createDate" th:text="${comment.createDate}"></div>
+        <div class="comments-user" th:text="${comment.user.name}"></div>
+        <div class="comments-response" th:text="${comment.response}"></div>
+        <div class="comments-commentId" th:text="${comment.commentId}"></div>
+    </div>
+
+    <H3>Time Costs:</H3>
+    <div class="time-costs-view" th:each="timeCost:${timeCosts}">
+        <div class="time" th:text="${timeCost.time}"></div>
+        <div class="comment" th:text="${timeCost.comment}"></div>
+    </div>
+
+    <h3>Actions: </h3>
+    <div class="actions-view" th:each="action:${actions}">
+        <div class="action-createDate" th:text="${action.createDate}"></div>
+        <div class="action-describe" th:text="${action.describe}"></div>
+    </div>
 
 
 </body>

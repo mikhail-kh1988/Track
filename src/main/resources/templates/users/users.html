@@ -6,9 +6,13 @@
 </head>
 <body>
 
-    <h2>Welcome to User and group management</h2>
+    <h2>Welcome to User and Group management</h2>
 
     <a th:href="@{/ui/main}"> Back main page </a>
+    <br>
+    <a th:href="@{/ui/users/new_group}"> crete new group </a>
+    <br>
+    <a th:href="@{/ui/users/newUser}"> crete new user </a>
 
     <h3> Users:</h3>
 
@@ -38,7 +42,7 @@
             <td th:text="${user.phoneNumber}"></td>
             <td th:text="${user.cnAdUser}"></td>
             <td th:text="${user.status}"></td>
-            <td> change </td>
+            <td> <a th:href="@{/ui/users/change/{id}(id=${user.id})}"> change</a> </td>
         </tr>
         </tbody>
     </table>
@@ -67,7 +71,7 @@
             <td th:text="${group.createDate}"></td>
             <td th:text="${group.owner}"></td>
             <td th:text="${group.createBy}"></td>
-            <td> change</a> </td>
+            <td><a th:href="@{/ui/users/view_group/{groupId}(groupId=${group.id})}"> VIEW </a> </td>
         </tr>
         </tbody>
     </table>

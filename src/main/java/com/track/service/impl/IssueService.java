@@ -451,6 +451,16 @@ public class IssueService implements IIssueService {
     }
 
     @Override
+    public List<Track> findAllIssue() {
+        List<Track> tracks = new ArrayList<>();
+
+        for (Issue issue: issueRepository.findAll())
+            tracks.add(IssueToTrackTranslator.getTrack(issue));
+
+        return tracks;
+    }
+
+    @Override
     public List<Track> findIssueByProjectId(Long projectId) {
 
         List<Track> trackList = new ArrayList<>();

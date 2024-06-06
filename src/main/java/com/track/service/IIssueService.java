@@ -26,6 +26,7 @@ public interface IIssueService {
     boolean removeTimeCostFromIssue(String externalId, Long costId, Long changeUserId);
     boolean addAttachmentInIssue(String externalId, Attachment attachment);
     boolean removeAttachmentFromIssue(Long attachId);
+    List<Track> findAllIssue();
     List<Track> findIssueByProjectId(Long projectId);
     List<Track> findBindIssue(String externalId);
     List<Issue> findIssueByField(int priorityId, Long statusId, Long categoryId, String trackName, Long assignId, Long createById);

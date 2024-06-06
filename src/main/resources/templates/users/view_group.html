@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View group</title>
+</head>
+<body>
+
+    <a th:href="@{/ui/users/}"> Back users and group page </a>
+
+    <h2><div th:text="*{group.name}"></div></h2>
+    Group is active: <div th:text="*{group.active}"></div>
+    Approve group is: <div th:text="*{group.approve}"></div>
+    <div th:date="*{group.createDate}"></div>
+
+    <table>
+        <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>email</th>
+        <th>login</th>
+        <th>password</th>
+        <th>jobTitle</th>
+        <th>department</th>
+        <th>phoneNumber</th>
+        <th>cnAdUser</th>
+        <th>status</th>
+        <th>change</th>
+        </thead>
+        <tbody>
+        <tr th:each="user:${allUsersGroup}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.jobTitle}"></td>
+            <td th:text="${user.department}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.cnAdUser}"></td>
+            <td th:text="${user.status}"></td>
+            <td> change </td>
+        </tr>
+    </tbody>
+
+
+        <form action="#" th:action="@{/ui/users/add_user_group}" th:object="${dtoUI}" method="POST">
+            <select th:field="*{userId}">
+                <option th:each="userId:${addUsers}"
+                        th:value="${userId.id}"
+                        th:text="${userId.name}">
+                </option>
+            </select> user <BR>
+            <!--<input type="text" th:field="${groupId}">-->
+            <select th:field="*{groupId}">
+                <option th:each="groupId:${group}"
+                        th:value="${groupId.id}"
+                        th:text="${groupId.name}">
+                </option>
+            </select> group <BR>
+
+            <button type="submit"> add user in group </button>
+
+        </form>
+
+
+</table>
+
+</body>
+</html>
